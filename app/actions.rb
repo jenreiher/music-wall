@@ -3,25 +3,13 @@ enable :sessions
 
 helpers do
 
-  def logged_in?(current_user)
-    @user = current_user
+  def logged_in?
     if session["username"]
-      true
-    elsif
-      # TODO logic here is wrong? it assumes that there is always a current user when there is not !
-      password_correct?(current_user)
-      session["username"] = params[:username]
-      true
+      @user = User.find_by username: session["username"]
+      if @user
+        true
+      end
     else
-      false
-    end
-  end
-
-  def password_correct?(current_user)
-    if params[:password] && params[:password] == @user.password
-      true
-    else
-      # TODO flash user error
       false
     end
   end
@@ -75,9 +63,11 @@ end
 post '/login' do
   @user = User.find_by username: params[:username]
 
-  if logged_in?(@user)
+  if params[:password] && params[:password] == @user.password
+    session["username"] = @user.username
     redirect '/tracks'
   else
+    # TODO flash user error
     erb :'user/index'
   end
 end
