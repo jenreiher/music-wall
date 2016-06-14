@@ -1,7 +1,5 @@
 class User < ActiveRecord::Base
 
-  attr_accessor :password_confirmation
-
   has_many :tracks
 
   validates :username, uniqueness: { case_sensitive: false, message: "this username already exists" }
