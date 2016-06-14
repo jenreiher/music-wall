@@ -22,3 +22,33 @@ end
 get '/tracks/new' do
   erb :'tracks/new'
 end
+
+post '/signup' do
+  @user = User.new(
+    username: params[:username],
+    email: params[:email],
+    email_confirmation: params[:email_confirmation],
+    password: params[:password],
+    password_confirmation: params[:password_confirmation]
+
+    )
+  if @user.save
+    redirect '/tracks'
+  else
+    erb :'user/index'
+  end
+end
+
+get '/signup' do
+  erb :'user/index'
+end
+
+post '/login' do
+  @user = User.find params[:username]
+
+  if @user.save
+    redirect '/tracks'
+  else
+    erb :'user/index'
+  end
+end
