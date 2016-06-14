@@ -8,41 +8,7 @@
       <% end %>
     </ul>
   </div>
-<% end %>
-
-
-<% if logged_in? %>
-<!-- logout button ... should only display if logged in -->
-  <form  class="form-inline" method="post" action="/logout" >
-    <input class="btn btn-primary" type="submit" value="Logout">
-  </form>
-
-
-
-<% else %>
-<!-- login form ... should not display if logged in -->
-  <div class="tracks">
-    <form  class="form-inline" method="post" action="/login" >
-      <div class="form-group">
-        <label>Username:</label>
-        <div>
-          <input type ="text" class="form-control" name="username" value="<%= @user && @user.username %>">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Password:</label>
-        <div>
-          <input type="password" class="form-control" name="password" value="<%= @user && @user.password %>">
-        </div>
-      </div>
-
-      <div>
-        <input class="btn btn-primary" type="submit" value="Login">
-      </div>
-
-    </form>
-  </div>
+<% end %>  
 
   <hr>
 
@@ -73,14 +39,14 @@
     <div class="form-group">
       <label class="col-sm-2 control-label">Password:</label>
       <div class="col-sm-10">
-        <input type="password" class="form-control" name="password" value="<%= @user && @user.password %>">
+        <input type="password" class="form-control" name="password">
       </div>
     </div>
 
     <div class="form-group">
       <label class="col-sm-2 control-label">Confirm Password:</label>
       <div class="col-sm-10">
-        <input type="password" class="form-control" name="password_confirmation" value="<%= @user && @user.password_confirmation %>">
+        <input type="password" class="form-control" name="password_confirmation">
       </div>
     </div>
 
@@ -90,10 +56,5 @@
 
   </form>
   <!-- end signup form -->
-<% end %>
-
-<!-- end login form -->
-
-
 
 </div>

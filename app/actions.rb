@@ -5,14 +5,27 @@ helpers do
 
   def logged_in?
     if session["username"]
-      @user = User.find_by username: session["username"]
-      if @user
+      @current_user = User.find_by username: session["username"]
+      if @current_user
         true
       end
     else
       false
     end
   end
+
+  def voted?(current_track_id)
+    @current_user = User.find_by username: session["username"]
+    if Upvote.where(user_track_id: "#{@current_user.id}-#{current_track_id}").exists?
+      true
+    else
+      false
+    end
+  end
+
+  # def total_votes(current_track_id)
+  #   Upvote.where("tracks_id = ?", [current_track_id]).count
+  # end
 
 end
 
@@ -29,7 +42,8 @@ post '/tracks' do
   @track = Track.new(
     url: params[:url],
     song_title: params[:song_title],
-    author: params[:author]
+    author: params[:author],
+    submitter: session["username"]
     )
   if @track.save
     redirect '/tracks'
@@ -67,7 +81,7 @@ post '/login' do
     session["username"] = @user.username
     redirect '/tracks'
   else
-    # TODO flash user error
+    # TODO flash user error that the passwords do not match
     erb :'user/index'
   end
 end
@@ -75,4 +89,16 @@ end
 post '/logout' do
   session["username"] = nil
   redirect '/signup'
+end
+
+
+post '/vote' do
+  @current_user = User.find_by username: session["username"]
+  @current_track = Track.find(params[:track_id])
+  @vote = @current_track.upvotes.build(
+    user_track_id: "#{@current_user.id}-#{@current_track.id}"
+    )
+  if @vote.save
+    redirect '/tracks'
+  end
 end

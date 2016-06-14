@@ -8,3 +8,28 @@
   text-align: center;
   display: block;
 }
+
+
+.active {
+  color: #fff;
+  background-color: green;
+  border: 1px solid;
+  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+  margin: 10px auto;
+  padding: 3px;
+  text-align: center;
+}
+
+.inactive {
+  color: #fff;
+  background-color: #ddd;
+  border: 1px solid;
+  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+  margin: 10px auto;
+  padding: 3px;
+  text-align: center;
+}

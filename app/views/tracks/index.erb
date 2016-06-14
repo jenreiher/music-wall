@@ -1,9 +1,22 @@
-<% @tracks.each do |track| %>
+<% @tracks.order(vote_count: :desc,created_at: :asc).each do |track| %>
   <div class="track">
     <h3><%= track.song_title %> <br>
     <small>(by: <%= track.author %>)</small></h3>
     <p>
-      <%= track.url %>
+      <%= track.url %><br>
+      <small>(Submitter: <%= track.submitter %>)</small></h3>
     </p>
+    <b>Votes:</b>
+    <%= track.vote_count %>
+    <% unless voted?(track.id) %>
+       <!-- post a new vote -->
+
+       <form method="post" action="/vote">
+          <input type="hidden" name="track_id" value="<%= track.id %>">
+          <input class="btn btn-success" type="submit" value="+1">
+       </form>
+    <% else %>
+      <div class="inactive">+1</div>
+    <% end %>
   </div>
 <% end %>
