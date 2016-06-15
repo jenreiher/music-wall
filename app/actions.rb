@@ -136,6 +136,7 @@ post '/review' do
   @current_track = Track.find(params[:track_id])
   @review = current_user.reviews.build(
     content: params[:content],
+    rating: params[:rating],
     user_track_id: "#{current_user.id}-#{@current_track.id}",
     track: @current_track
     )
