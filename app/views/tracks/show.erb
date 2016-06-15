@@ -27,10 +27,14 @@
 <% @reviews.each do |review| %>
 <ul>
   <li><em><%= review.content %></em> -- <%= review.user.username %></li>
-<!--   <% if reviewed?(@track.id) %>
-    delete
+  <% if reviewed?(@track.id) && (review.user_id == current_user.id) %>
+    <form method="post" action="/delete">
+      <input type="hidden" name="review_id" value="<%= review.id %>">
+      <input type="hidden" name="track_id" value="<%= @track.id %>">
+      <input class="btn btn-danger btn-xs" type="submit" value="delete">
+   </form>
     <br>
-  <% end %> -->
+  <% end %>
   
 </ul>
 <% end %>

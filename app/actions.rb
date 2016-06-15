@@ -68,9 +68,9 @@ get '/tracks/new' do
   erb :'tracks/new'
 end
 
-get '/tracks/:id' do
-  @track = Track.find params[:id]
-  @reviews = Review.where track_id: params[:id]
+get '/tracks/:track_id' do
+  @track = Track.find params[:track_id]
+  @reviews = Review.where track_id: params[:track_id]
   erb :'tracks/show'
 end
 
@@ -140,12 +140,15 @@ post '/review' do
     track: @current_track
     )
   if @review.save
-    redirect '/tracks/:track_id'
+    redirect "/tracks/#{params[:track_id]}"
+  else
+    # TODO flash user error that the review was not saved
+    erb :'user/index'
   end
 end
 
-post '/reviews/:id' do
-  @review = Review.find params[:id]
+post '/delete' do
+  @review = Review.find params[:review_id]
   @review.destroy
   redirect '/tracks'
 end
