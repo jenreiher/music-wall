@@ -23,6 +23,15 @@ helpers do
     end
   end
 
+  def reviewed?(current_track_id)
+    @current_user = User.find_by username: session["username"]
+    if Review.where(user_track_id: "#{@current_user.id}-#{current_track_id}").exists?
+      true
+    else
+      false
+    end    
+  end
+
   # def total_votes(current_track_id)
   #   Upvote.where("tracks_id = ?", [current_track_id]).count
   # end
@@ -56,6 +65,7 @@ end
 
 get '/tracks/:id' do
   @track = Track.find params[:id]
+  @reviews = Review.where track_id: params[:id]
   erb :'tracks/show'
 end
 

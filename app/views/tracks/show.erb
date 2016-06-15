@@ -10,18 +10,23 @@
   <small>Created at: <%= @track.created_at %></small>
 </p>
 
-<b>Votes:</b>
-    <%= @track.vote_count %>
-    <% unless voted?(@track.id) %>
-       <!-- post a new vote -->
-       <form method="post" action="/vote">
-          <input type="hidden" name="track_id" value="<%= @track.id %>">
-          <input class="btn btn-success" type="submit" value="+1">
-       </form>
-       <!-- end post vote -->
-    <% else %>
-      <div class="inactive">+1</div>
-    <% end %>
+<b>Votes:</b> <%= @track.vote_count %>
+
+<% unless voted?(@track.id) %>
+   <!-- post a new vote -->
+   <form method="post" action="/vote">
+      <input type="hidden" name="track_id" value="<%= @track.id %>">
+      <input class="btn btn-success" type="submit" value="+1">
+   </form>
+   <!-- end post vote -->
+<% else %>
+  <div class="inactive">+1</div>
+<% end %>
+
+<b>Reviews:</b>   
+<% @reviews.each do |review| %>
+  <%= review.content %> -- <%= review.user.username %>
+<% end %>
 
 <hr/>
 
