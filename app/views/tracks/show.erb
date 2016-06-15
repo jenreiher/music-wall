@@ -23,9 +23,29 @@
   <div class="inactive">+1</div>
 <% end %>
 
-<b>Reviews:</b>   
+<b>Reviews:</b><br>   
 <% @reviews.each do |review| %>
-  <%= review.content %> -- <%= review.user.username %>
+<ul>
+  <li><em><%= review.content %></em> -- <%= review.user.username %></li>
+</ul>
+<% end %>
+<br>
+
+<!-- review submission form - only show if !reviewed? -->
+<% unless reviewed?(@track.id) %>
+  <form class="form-horizontal" method="post" action="/review" >
+    <div class="form-group">
+      <input type="hidden" name="track_id" value="<%= @track.id %>">
+      <label class="col-sm-2 control-label">What do you think of this track?:</label>
+      <div class="col-sm-10">
+        <input type ="text" class="form-control" name="content">
+      </div>
+    </div>
+
+    <div class="col-sm-offset-2 col-sm-10">
+      <input class="btn btn-primary" type="submit" value="Add Review">
+    </div>
+  </form>
 <% end %>
 
 <hr/>

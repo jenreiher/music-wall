@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
 
   has_many :tracks
+  has_many :reviews
 
   validates :username, uniqueness: { case_sensitive: false, message: "this username already exists" }
   validates :email, confirmation: { message: "does not match" }

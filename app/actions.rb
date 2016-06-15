@@ -129,11 +129,12 @@ end
 post '/review' do
   @current_user = User.find_by username: session["username"]
   @current_track = Track.find(params[:track_id])
-  @review = @current_user.review.build(
+  @review = @current_user.reviews.build(
+    content: params[:content],
     user_track_id: "#{@current_user.id}-#{@current_track.id}",
     track: @current_track
     )
   if @review.save
-    redirect '/tracks'
+    redirect '/tracks/:track_id'
   end
 end
