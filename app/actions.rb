@@ -54,6 +54,11 @@ get '/tracks/new' do
   erb :'tracks/new'
 end
 
+get '/tracks/:id' do
+  @track = Track.find params[:id]
+  erb :'tracks/show'
+end
+
 post '/signup' do
   @user = User.new(
     username: params[:username],
@@ -101,6 +106,14 @@ post '/vote' do
   if @vote.save
     redirect '/tracks'
   end
+end
+
+# is this correct? 
+# => not sure how/where to get @reviews 
+# => in order to make it accessible to the templates!
+get '/reviews' do
+  @reviews = Review.all
+  erb :'tracks/index'
 end
 
 post '/review' do
