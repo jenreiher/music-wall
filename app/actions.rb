@@ -3,9 +3,14 @@ enable :sessions
 
 helpers do
 
+  def current_user
+    @current_user ||= User.find_by username: session["username"] if session["username"] 
+  end
+
+
   def logged_in?
     if session["username"]
-      @current_user = User.find_by username: session["username"]
+      current_user
       if @current_user
         true
       end
@@ -15,8 +20,8 @@ helpers do
   end
 
   def voted?(current_track_id)
-    @current_user = User.find_by username: session["username"]
-    if Upvote.where(user_track_id: "#{@current_user.id}-#{current_track_id}").exists?
+    current_user
+    if Upvote.where(user_track_id: "#{current_user.id}-#{current_track_id}").exists?
       true
     else
       false
@@ -24,8 +29,8 @@ helpers do
   end
 
   def reviewed?(current_track_id)
-    @current_user = User.find_by username: session["username"]
-    if Review.where(user_track_id: "#{@current_user.id}-#{current_track_id}").exists?
+    current_user
+    if Review.where(user_track_id: "#{current_user.id}-#{current_track_id}").exists?
       true
     else
       false
@@ -90,10 +95,10 @@ get '/signup' do
 end
 
 post '/login' do
-  @user = User.find_by username: params[:username]
+  current_user
 
-  if params[:password] && params[:password] == @user.password
-    session["username"] = @user.username
+  if params[:password] && params[:password] == current_user.password
+    session["username"] = current_user.username
     redirect '/tracks'
   else
     # TODO flash user error that the passwords do not match
@@ -107,11 +112,11 @@ post '/logout' do
 end
 
 post '/vote' do
-  @current_user = User.find_by username: session["username"]
+  current_user  
   @current_track = Track.find(params[:track_id])
   @vote = @current_track.upvotes.build(
-    user_track_id: "#{@current_user.id}-#{@current_track.id}",
-    user: @current_user
+    user_track_id: "#{current_user.id}-#{@current_track.id}",
+    user: current_user
     )
   if @vote.save
     redirect '/tracks'
@@ -127,14 +132,20 @@ get '/reviews' do
 end
 
 post '/review' do
-  @current_user = User.find_by username: session["username"]
+  current_user
   @current_track = Track.find(params[:track_id])
-  @review = @current_user.reviews.build(
+  @review = current_user.reviews.build(
     content: params[:content],
-    user_track_id: "#{@current_user.id}-#{@current_track.id}",
+    user_track_id: "#{current_user.id}-#{@current_track.id}",
     track: @current_track
     )
   if @review.save
     redirect '/tracks/:track_id'
   end
+end
+
+post '/reviews/:id' do
+  @review = Review.find params[:id]
+  @review.destroy
+  redirect '/tracks'
 end

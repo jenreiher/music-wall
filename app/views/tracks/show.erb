@@ -27,6 +27,11 @@
 <% @reviews.each do |review| %>
 <ul>
   <li><em><%= review.content %></em> -- <%= review.user.username %></li>
+<!--   <% if reviewed?(@track.id) %>
+    delete
+    <br>
+  <% end %> -->
+  
 </ul>
 <% end %>
 <br>
