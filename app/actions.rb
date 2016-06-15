@@ -96,7 +96,8 @@ post '/vote' do
   @current_user = User.find_by username: session["username"]
   @current_track = Track.find(params[:track_id])
   @vote = @current_track.upvotes.build(
-    user_track_id: "#{@current_user.id}-#{@current_track.id}"
+    user_track_id: "#{@current_user.id}-#{@current_track.id}",
+    user: @current_user
     )
   if @vote.save
     redirect '/tracks'

@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160614233459) do
+ActiveRecord::Schema.define(version: 20160615002010) do
+
+  create_table "reviews", force: :cascade do |t|
+    t.integer "track_id"
+    t.integer "user_id"
+    t.string  "content"
+    t.integer "rating",        default: 0
+    t.string  "user_track_id"
+  end
 
   create_table "tracks", force: :cascade do |t|
     t.string   "song_title"
