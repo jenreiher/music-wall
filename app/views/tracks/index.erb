@@ -10,11 +10,11 @@
     <%= track.vote_count %>
     <% unless voted?(track.id) %>
        <!-- post a new vote -->
-
        <form method="post" action="/vote">
           <input type="hidden" name="track_id" value="<%= track.id %>">
           <input class="btn btn-success" type="submit" value="+1">
        </form>
+       <!-- end post vote -->
     <% else %>
       <div class="inactive">+1</div>
     <% end %>

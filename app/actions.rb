@@ -91,7 +91,6 @@ post '/logout' do
   redirect '/signup'
 end
 
-
 post '/vote' do
   @current_user = User.find_by username: session["username"]
   @current_track = Track.find(params[:track_id])
@@ -100,6 +99,18 @@ post '/vote' do
     user: @current_user
     )
   if @vote.save
+    redirect '/tracks'
+  end
+end
+
+post '/review' do
+  @current_user = User.find_by username: session["username"]
+  @current_track = Track.find(params[:track_id])
+  @review = @current_user.review.build(
+    user_track_id: "#{@current_user.id}-#{@current_track.id}",
+    track: @current_track
+    )
+  if @review.save
     redirect '/tracks'
   end
 end
