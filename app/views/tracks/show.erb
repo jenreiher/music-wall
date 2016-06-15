@@ -26,7 +26,7 @@
 <h2>Reviews:</h2>   
 <% @reviews.each do |review| %>
 <ul>
-  <li> (<%= review.rating %>) <em><%= review.content %></em> -- <%= review.user.username %></li>
+  <li> <%= "&#9733;" * review.rating %> <br> <em><%= review.content %></em> -- <%= review.user.username %></li>
   <% if reviewed?(@track.id) && (review.user_id == current_user.id) %>
     <form method="post" action="/delete">
       <input type="hidden" name="review_id" value="<%= review.id %>">
@@ -48,13 +48,11 @@
 
     <div class="form-group" class="col-sm-2">
       <label class="col-sm-2 control-label">Rate this song out of 5:</label>
-      <div>
-        <select class="form-control" class="select-styling" name="rating">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
+      <div class="col-sm-10">
+        <select class="form-control" name="rating">
+          <% [5,4,3,2,1].each do |index| %>
+            <option value="<%= index %>"><%= "&#9733;" * index %></option>
+          <% end %>
         </select>
       </div>
     </div>

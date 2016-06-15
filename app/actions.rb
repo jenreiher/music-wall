@@ -95,10 +95,10 @@ get '/signup' do
 end
 
 post '/login' do
-  current_user
+  @user = User.find_by username:params[:username]
 
-  if params[:password] && params[:password] == current_user.password
-    session["username"] = current_user.username
+  if params[:password] == @user.password && params[:password]
+    session["username"] = @user.username
     redirect '/tracks'
   else
     # TODO flash user error that the passwords do not match
@@ -151,5 +151,5 @@ end
 post '/delete' do
   @review = Review.find params[:review_id]
   @review.destroy
-  redirect '/tracks'
+  redirect "/tracks/#{params[:track_id]}"
 end
